@@ -31,6 +31,66 @@ const headers: TemplateVariant["header"][] = ["serif", "centered", "bordered", "
 const accents: TemplateVariant["accent"][] = ["left-bar", "top-line", "chips", "progress", "dots", "none"];
 const fonts = ["Inter, sans-serif", "Georgia, serif", "Arial, sans-serif", "Times New Roman, serif", "Trebuchet MS, sans-serif"];
 
+const specialties = {
+  Classic: [
+    "Executive Leadership",
+    "Corporate Finance",
+    "Legal Counsel",
+    "Academic CV",
+    "Government Roles",
+    "Healthcare Administration",
+    "Consulting",
+    "Operations",
+  ],
+  Modern: [
+    "Software Engineering",
+    "Product Management",
+    "UX/UI Design",
+    "Data Science",
+    "Marketing Strategy",
+    "Sales Leadership",
+    "Cybersecurity",
+    "Startup Founder",
+    "Customer Success",
+    "Cloud Architecture",
+  ],
+  Creative: [
+    "Brand Designer",
+    "Art Director",
+    "Content Creator",
+    "Motion Designer",
+    "Creative Producer",
+    "Photographer",
+    "Fashion Portfolio",
+    "Social Media",
+  ],
+  Minimal: [
+    "ATS Specialist",
+    "Graduate Resume",
+    "Technical Writer",
+    "Research Assistant",
+    "Nonprofit",
+    "Remote Work",
+    "Clean One-Page",
+    "International CV",
+  ],
+} satisfies Record<Template["category"], string[]>;
+
+const styleNames = [
+  "Signal",
+  "Atlas",
+  "Meridian",
+  "Northstar",
+  "Aperture",
+  "Vector",
+  "Keystone",
+  "Summit",
+  "Studio",
+  "Ledger",
+  "Pulse",
+  "Linear",
+];
+
 function variantFor(category: Template["category"], index: number): TemplateVariant {
   const id = `${category.toLowerCase()}-${String(index).padStart(2, "0")}`;
   if (fullVariants[id]) {
@@ -60,10 +120,12 @@ function makeTemplate(category: Template["category"], index: number): Template {
 
   return {
     id,
-    name: `${category} ${String(index).padStart(2, "0")}`,
+    name: `${styleNames[(index + category.length) % styleNames.length]} ${String(index).padStart(2, "0")}`,
     category,
+    specialty: specialties[category][(index - 1) % specialties[category].length],
+    description: `${category.toLowerCase()} resume template tuned for ${specialties[category][(index - 1) % specialties[category].length].toLowerCase()} applications.`,
     thumbnail: `/templates/${id}.png`,
-    tags: [slug, variant.layout, variant.header, variant.accent, variant.font.split(",")[0].toLowerCase()],
+    tags: [slug, variant.layout, variant.header, variant.accent, variant.font.split(",")[0].toLowerCase(), specialties[category][(index - 1) % specialties[category].length].toLowerCase()],
     isPremium: false,
     component: createTemplateComponent(variant),
   };

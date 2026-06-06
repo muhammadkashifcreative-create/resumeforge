@@ -116,6 +116,8 @@ export interface Template {
   id: string;
   name: string;
   category: "Classic" | "Modern" | "Creative" | "Minimal";
+  specialty: string;
+  description: string;
   thumbnail: string;
   tags: string[];
   isPremium: false;

@@ -17,6 +17,7 @@ import { sampleResume, defaultTheme } from "@/lib/sample-resume";
 import { getTemplate, templates } from "@/lib/templates/registry";
 import { useResumeStore } from "@/store/resumeStore";
 import type { ResumeSectionType } from "@/types/resume";
+import { TemplatePreview } from "@/components/templates/TemplatePreview";
 
 const sectionLabels: Record<ResumeSectionType, string> = {
   personal: "Personal",
@@ -173,10 +174,10 @@ export function BuilderClient({ resumeId }: { resumeId: string }) {
               </label>
               <div className="grid grid-cols-2 gap-2">
                 {filteredTemplates.map((item) => (
-                  <button className="rounded-md border border-slate-200 p-2 text-left hover:border-blue-500" key={item.id} onClick={() => setTemplateId(item.id)}>
-                    <div className="mb-2 aspect-[3/4] rounded bg-gradient-to-br from-slate-100 to-blue-100" />
+                  <button className="rounded-md border border-slate-200 bg-white p-2 text-left hover:border-blue-500" key={item.id} onClick={() => setTemplateId(item.id)}>
+                    <TemplatePreview template={item} className="mb-2" />
                     <div className="text-xs font-black">{item.name}</div>
-                    <div className="text-[10px] text-slate-500">{item.category}</div>
+                    <div className="text-[10px] text-slate-500">{item.specialty}</div>
                   </button>
                 ))}
               </div>
