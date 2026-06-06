@@ -41,16 +41,16 @@ function SectionRow({ section }: { section: ResumeSectionType }) {
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      className={`flex h-10 items-center gap-2 rounded-md border px-2 text-sm ${activeSection === section ? "border-blue-500 bg-blue-50" : "border-slate-200 bg-white"}`}
+      className={`flex h-10 items-center gap-2 rounded-md border px-2 text-sm transition ${activeSection === section ? "border-indigo-400 bg-indigo-500/15 text-white" : "border-white/10 bg-white/[0.04] text-zinc-300 hover:bg-white/[0.07]"}`}
     >
-      <button className="text-slate-400" aria-label={`Move ${sectionLabels[section]}`} {...attributes} {...listeners}>
+      <button className="text-zinc-500" aria-label={`Move ${sectionLabels[section]}`} {...attributes} {...listeners}>
         <GripVertical className="size-4" />
       </button>
       <button className="min-w-0 flex-1 text-left font-semibold" type="button" onClick={() => setActiveSection(section)}>
         {sectionLabels[section]}
       </button>
       <button type="button" aria-label={`Toggle ${sectionLabels[section]}`} onClick={() => toggleSection(section)}>
-        {visible ? <Eye className="size-4 text-slate-500" /> : <EyeOff className="size-4 text-slate-400" />}
+        {visible ? <Eye className="size-4 text-cyan-200" /> : <EyeOff className="size-4 text-zinc-500" />}
       </button>
     </div>
   );
@@ -95,22 +95,25 @@ export function BuilderClient({ resumeId }: { resumeId: string }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-950">
-      <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-slate-200 bg-white px-4">
-        <Link className="text-lg font-black tracking-tight" href="/">ResumeForge</Link>
-        <input className="h-9 max-w-64 rounded-md border border-slate-200 px-3 text-sm font-semibold" defaultValue="Untitled Resume" aria-label="Resume title" />
-        <Button type="button" variant="outline" onClick={() => setRightTab("templates")}>Template</Button>
-        <Button type="button" asChild>
+    <div className="rf-mesh min-h-screen text-white">
+      <header className="sticky top-0 z-30 flex min-h-16 flex-wrap items-center gap-3 border-b border-white/10 bg-[#080810]/80 px-3 py-3 backdrop-blur-2xl sm:px-4">
+        <Link className="rf-heading inline-flex items-center gap-3 text-lg font-black tracking-tight" href="/">
+          <span className="size-7 rotate-45 rounded-md bg-gradient-to-br from-indigo-500 to-cyan-300 shadow-[0_0_24px_rgba(99,102,241,.45)]" />
+          ResumeForge
+        </Link>
+        <input className="h-10 min-w-0 flex-1 rounded-md border border-white/10 bg-white/[0.06] px-3 text-sm font-semibold text-white outline-none placeholder:text-zinc-500 focus:border-indigo-400 sm:max-w-64" defaultValue="Untitled Resume" aria-label="Resume title" />
+        <Button className="border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.1]" type="button" variant="outline" onClick={() => setRightTab("templates")}>Template</Button>
+        <Button className="bg-indigo-500 text-white shadow-[0_0_24px_rgba(99,102,241,.25)] hover:bg-indigo-400" type="button" asChild>
           <a href={`/api/resume/export?resumeId=${resumeId}&template=${templateId}`}>
             <Download className="size-4" /> Download PDF
           </a>
         </Button>
-        <span className="ml-auto text-xs text-slate-500">{isSaving ? "Saving..." : "Saved"}</span>
-        <button aria-label="User menu"><UserCircle className="size-8 text-slate-500" /></button>
+        <span className="ml-auto text-xs font-bold text-zinc-400">{isSaving ? "Saving..." : "Saved"}</span>
+        <button aria-label="User menu"><UserCircle className="size-8 text-zinc-400" /></button>
       </header>
 
       <div className="grid min-h-[calc(100vh-4rem)] grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)_300px]">
-        <aside className="border-r border-slate-200 bg-white p-4">
+        <aside className="border-b border-white/10 bg-[#0d0d1f]/75 p-4 backdrop-blur-xl lg:border-b-0 lg:border-r">
           <div className="space-y-4">
             <DndContext collisionDetection={closestCenter} onDragEnd={onDragEnd}>
               <SortableContext items={resumeData.sectionOrder} strategy={verticalListSortingStrategy}>
@@ -120,20 +123,20 @@ export function BuilderClient({ resumeId }: { resumeId: string }) {
                 </div>
               </SortableContext>
             </DndContext>
-            <Button className="w-full" type="button" variant="outline"><Plus className="size-4" /> Add Section</Button>
-            <div className="space-y-3 rounded-md border border-slate-200 p-3">
-              <div className="flex items-center gap-2 text-sm font-black"><Palette className="size-4" /> Theme</div>
+            <Button className="w-full border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.1]" type="button" variant="outline"><Plus className="size-4" /> Add Section</Button>
+            <div className="space-y-3 rounded-md border border-white/10 bg-white/[0.04] p-3">
+              <div className="flex items-center gap-2 text-sm font-black text-white"><Palette className="size-4 text-cyan-200" /> Theme</div>
               <label className="grid gap-1 text-xs font-semibold">
                 Primary
                 <input className="h-9 w-full" type="color" value={theme.primary} onChange={(event) => setTheme({ primary: event.target.value })} />
               </label>
-              <select className="h-10 rounded-md border border-slate-200 px-3 text-sm" value={theme.font} onChange={(event) => setTheme({ font: event.target.value })} aria-label="Font">
+              <select className="h-10 rounded-md border border-white/10 bg-[#10101f] px-3 text-sm text-white" value={theme.font} onChange={(event) => setTheme({ font: event.target.value })} aria-label="Font">
                 <option>Inter</option>
                 <option>Georgia</option>
                 <option>Arial</option>
                 <option>Times New Roman</option>
               </select>
-              <select className="h-10 rounded-md border border-slate-200 px-3 text-sm" value={theme.spacing} onChange={(event) => setTheme({ spacing: event.target.value as typeof theme.spacing })} aria-label="Spacing">
+              <select className="h-10 rounded-md border border-white/10 bg-[#10101f] px-3 text-sm text-white" value={theme.spacing} onChange={(event) => setTheme({ spacing: event.target.value as typeof theme.spacing })} aria-label="Spacing">
                 <option>Tight</option>
                 <option>Comfortable</option>
                 <option>Airy</option>
@@ -143,41 +146,43 @@ export function BuilderClient({ resumeId }: { resumeId: string }) {
           </div>
         </aside>
 
-        <main className="overflow-auto p-4">
-          <div className="mb-3 flex justify-center gap-2">
-            <Button type="button" variant="outline" size="sm" onClick={() => setZoom(0.5)}><ZoomOut className="size-4" /> 50%</Button>
-            <Button type="button" variant="outline" size="sm" onClick={() => setZoom(0.75)}>75%</Button>
-            <Button type="button" variant="outline" size="sm" onClick={() => setZoom(1)}><ZoomIn className="size-4" /> 100%</Button>
+        <main className="overflow-auto p-3 sm:p-4">
+          <div className="mb-3 flex flex-wrap justify-center gap-2">
+            <Button className="border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.1]" type="button" variant="outline" size="sm" onClick={() => setZoom(0.5)}><ZoomOut className="size-4" /> 50%</Button>
+            <Button className="border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.1]" type="button" variant="outline" size="sm" onClick={() => setZoom(0.75)}>75%</Button>
+            <Button className="border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.1]" type="button" variant="outline" size="sm" onClick={() => setZoom(1)}><ZoomIn className="size-4" /> 100%</Button>
           </div>
-          <div className="mx-auto w-[816px] origin-top" style={{ transform: `scale(${zoom})`, height: `${1056 * zoom}px` }}>
-            <TemplateComponent data={resumeData} theme={theme} />
+          <div className="overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.04] p-3">
+            <div className="mx-auto w-[816px] origin-top" style={{ transform: `scale(${zoom})`, height: `${1056 * zoom}px` }}>
+              <TemplateComponent data={resumeData} theme={theme} />
+            </div>
           </div>
         </main>
 
-        <aside className="border-l border-slate-200 bg-white p-4">
-          <div className="mb-4 grid grid-cols-2 rounded-md bg-slate-100 p-1">
-            <button className={`rounded px-3 py-2 text-sm font-bold ${rightTab === "ai" ? "bg-white shadow" : ""}`} onClick={() => setRightTab("ai")}>AI</button>
-            <button className={`rounded px-3 py-2 text-sm font-bold ${rightTab === "templates" ? "bg-white shadow" : ""}`} onClick={() => setRightTab("templates")}>Gallery</button>
+        <aside className="border-t border-white/10 bg-[#0d0d1f]/75 p-4 backdrop-blur-xl lg:border-l lg:border-t-0">
+          <div className="mb-4 grid grid-cols-2 rounded-md bg-white/[0.06] p-1">
+            <button className={`rounded px-3 py-2 text-sm font-bold ${rightTab === "ai" ? "bg-indigo-500 text-white shadow" : "text-zinc-300"}`} onClick={() => setRightTab("ai")}>AI</button>
+            <button className={`rounded px-3 py-2 text-sm font-bold ${rightTab === "templates" ? "bg-indigo-500 text-white shadow" : "text-zinc-300"}`} onClick={() => setRightTab("templates")}>Gallery</button>
           </div>
           {rightTab === "ai" ? (
             <div className="space-y-3">
-              <div className="flex items-center gap-2 text-sm font-black"><Sparkles className="size-4 text-blue-600" /> {sectionLabels[activeSection]} Assistant</div>
+              <div className="flex items-center gap-2 text-sm font-black text-white"><Sparkles className="size-4 text-cyan-200" /> {sectionLabels[activeSection]} Assistant</div>
               {["Start bullets with a strong verb.", "Add a metric to prove impact.", "Mirror keywords from the job post.", "Keep each bullet under two lines.", "Prioritize outcomes over tasks."].map((tip) => (
-                <p className="rounded-md border border-blue-100 bg-blue-50 p-3 text-sm text-blue-950" key={tip}>{tip}</p>
+                <p className="rounded-md border border-indigo-400/20 bg-indigo-500/10 p-3 text-sm text-zinc-200" key={tip}>{tip}</p>
               ))}
             </div>
           ) : (
             <div className="space-y-3">
               <label className="relative block">
-                <Search className="absolute left-3 top-2.5 size-4 text-slate-400" />
-                <input className="h-10 w-full rounded-md border border-slate-200 pl-9 pr-3 text-sm" value={templateQuery} onChange={(event) => setTemplateQuery(event.target.value)} placeholder="Search templates" />
+                <Search className="absolute left-3 top-2.5 size-4 text-zinc-500" />
+                <input className="h-10 w-full rounded-md border border-white/10 bg-white/[0.06] pl-9 pr-3 text-sm text-white outline-none placeholder:text-zinc-500 focus:border-indigo-400" value={templateQuery} onChange={(event) => setTemplateQuery(event.target.value)} placeholder="Search templates" />
               </label>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
                 {filteredTemplates.map((item) => (
-                  <button className="rounded-md border border-slate-200 bg-white p-2 text-left hover:border-blue-500" key={item.id} onClick={() => setTemplateId(item.id)}>
+                  <button className="rounded-md border border-white/10 bg-white/[0.05] p-2 text-left transition hover:border-indigo-400" key={item.id} onClick={() => setTemplateId(item.id)}>
                     <TemplatePreview template={item} className="mb-2" />
-                    <div className="text-xs font-black">{item.name}</div>
-                    <div className="text-[10px] text-slate-500">{item.specialty}</div>
+                    <div className="text-xs font-black text-white">{item.name}</div>
+                    <div className="text-[10px] text-zinc-400">{item.specialty}</div>
                   </button>
                 ))}
               </div>

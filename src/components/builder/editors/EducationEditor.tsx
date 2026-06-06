@@ -23,10 +23,10 @@ export function EducationEditor() {
           </div>
           <Field label="GPA" value={school.gpa} onChange={(gpa) => updateEducation(school.id, { gpa })} />
           <Field label="Achievements" value={school.achievements.join("\n")} onChange={(value) => updateEducation(school.id, { achievements: value.split("\n") })} textarea />
-          <Button type="button" size="sm" variant="ghost" onClick={() => removeEducation(school.id)}>Remove</Button>
+          <Button className="text-zinc-300 hover:bg-white/[0.08] hover:text-white" type="button" size="sm" variant="ghost" onClick={() => removeEducation(school.id)}>Remove</Button>
         </EditorBlock>
       ))}
-      <Button type="button" onClick={addEducation}>Add Education</Button>
+      <Button className="bg-indigo-500 text-white hover:bg-indigo-400" type="button" onClick={addEducation}>Add Education</Button>
     </div>
   );
 }

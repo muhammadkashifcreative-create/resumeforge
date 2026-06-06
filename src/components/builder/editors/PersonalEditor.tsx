@@ -17,7 +17,7 @@ export function PersonalEditor() {
 
   return (
     <div className="space-y-3">
-      {!validation.success ? <p className="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-700">Name, title, and a valid email strengthen your resume header.</p> : null}
+      {!validation.success ? <p className="rounded-md border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-xs text-amber-100">Name, title, and a valid email strengthen your resume header.</p> : null}
       <Field label="Full name" value={personal.fullName} onChange={(fullName) => updatePersonal({ fullName })} />
       <Field label="Job title" value={personal.jobTitle} onChange={(jobTitle) => updatePersonal({ jobTitle })} />
       <Field label="Email" value={personal.email} onChange={(email) => updatePersonal({ email })} type="email" />

@@ -40,7 +40,7 @@ export function CustomSectionEditor() {
   const updateCustomSection = useResumeStore((state) => state.updateCustomSection);
   return (
     <div className="space-y-3">
-      {customSections.length === 0 ? <p className="text-sm text-slate-500">Custom sections can be added from the section list.</p> : null}
+      {customSections.length === 0 ? <p className="text-sm text-zinc-400">Custom sections can be added from the section list.</p> : null}
       {customSections.map((section) => (
         <EditorBlock key={section.id} title={section.title || "Custom section"}>
           <Field label="Title" value={section.title} onChange={(title) => updateCustomSection(section.id, { title })} />

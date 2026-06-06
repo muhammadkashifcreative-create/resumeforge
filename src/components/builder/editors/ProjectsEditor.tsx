@@ -19,10 +19,10 @@ export function ProjectsEditor() {
           <Field label="Technologies" value={project.technologies.join(", ")} onChange={(value) => updateProject(project.id, { technologies: value.split(",").map((item) => item.trim()).filter(Boolean) })} />
           <Field label="URL" value={project.url} onChange={(url) => updateProject(project.id, { url })} />
           <Field label="GitHub" value={project.github} onChange={(github) => updateProject(project.id, { github })} />
-          <Button type="button" size="sm" variant="ghost" onClick={() => removeProject(project.id)}>Remove</Button>
+          <Button className="text-zinc-300 hover:bg-white/[0.08] hover:text-white" type="button" size="sm" variant="ghost" onClick={() => removeProject(project.id)}>Remove</Button>
         </EditorBlock>
       ))}
-      <Button type="button" onClick={addProject}>Add Project</Button>
+      <Button className="bg-indigo-500 text-white hover:bg-indigo-400" type="button" onClick={addProject}>Add Project</Button>
     </div>
   );
 }

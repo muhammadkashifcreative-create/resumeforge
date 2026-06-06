@@ -15,7 +15,7 @@ function BulletEditor({ value, onChange }: { value: string; onChange: (value: st
     onUpdate: ({ editor: activeEditor }) => onChange(activeEditor.getText().split("\n").filter(Boolean).join("\n")),
     editorProps: {
       attributes: {
-        class: "min-h-20 rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-blue-500",
+        class: "min-h-20 rounded-md border border-white/10 bg-white/[0.06] px-3 py-2 text-sm text-white outline-none focus:border-indigo-400",
       },
     },
   });
@@ -40,25 +40,25 @@ export function ExperienceEditor() {
             <Field label="Start" value={job.startDate} onChange={(startDate) => updateExperience(job.id, { startDate })} />
             <Field label="End" value={job.endDate} onChange={(endDate) => updateExperience(job.id, { endDate })} />
           </div>
-          <label className="flex items-center gap-2 text-xs font-semibold text-slate-600">
+          <label className="flex items-center gap-2 text-xs font-semibold text-zinc-300">
             <input type="checkbox" checked={job.current} onChange={(event) => updateExperience(job.id, { current: event.target.checked })} />
             Current role
           </label>
-          <div className="space-y-1.5 text-xs font-semibold text-slate-600">
+          <div className="space-y-1.5 text-xs font-semibold text-zinc-300">
             Bullets
             <BulletEditor value={job.bullets.join("\n")} onChange={(text) => updateExperience(job.id, { bullets: text.split("\n") })} />
           </div>
           <div className="flex gap-2">
-            <Button type="button" size="sm" variant="outline" aria-label="Suggest bullets">
+            <Button className="border-white/10 bg-white/[0.05] text-white hover:bg-white/[0.1]" type="button" size="sm" variant="outline" aria-label="Suggest bullets">
               <Wand2 className="size-4" /> AI Suggest Bullets
             </Button>
-            <Button type="button" size="sm" variant="ghost" onClick={() => removeExperience(job.id)}>
+            <Button className="text-zinc-300 hover:bg-white/[0.08] hover:text-white" type="button" size="sm" variant="ghost" onClick={() => removeExperience(job.id)}>
               Remove
             </Button>
           </div>
         </EditorBlock>
       ))}
-      <Button type="button" onClick={addExperience}>Add Experience</Button>
+      <Button className="bg-indigo-500 text-white hover:bg-indigo-400" type="button" onClick={addExperience}>Add Experience</Button>
     </div>
   );
 }

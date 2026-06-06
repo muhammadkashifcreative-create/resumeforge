@@ -1,3 +1,4 @@
+@import url("https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=cabinet-grotesk@400,500&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -123,8 +124,30 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "Cabinet Grotesk", var(--font-sans), system-ui, sans-serif;
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .rf-heading {
+    font-family: "Clash Display", var(--font-sans), system-ui, sans-serif;
+    letter-spacing: -0.03em;
+  }
+
+  .rf-glass {
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background: rgb(255 255 255 / 0.04);
+    backdrop-filter: blur(12px);
+  }
+
+  .rf-mesh {
+    background:
+      radial-gradient(circle at 18% 12%, rgb(99 102 241 / 0.22), transparent 28%),
+      radial-gradient(circle at 88% 18%, rgb(34 211 238 / 0.14), transparent 28%),
+      radial-gradient(circle at 48% 92%, rgb(168 85 247 / 0.14), transparent 30%),
+      #080810;
   }
 }
