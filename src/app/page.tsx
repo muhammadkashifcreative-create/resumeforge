@@ -2,14 +2,16 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@r
 import {
   ArrowRight,
   Bot,
-  BriefcaseBusiness,
   CheckCircle2,
   Download,
+  FileText,
   Layers3,
   Lock,
+  Mail,
   SearchCheck,
+  ShieldCheck,
   Sparkles,
-  Target,
+  Star,
   Zap,
   type LucideIcon,
 } from "lucide-react";
@@ -17,87 +19,158 @@ import Link from "next/link";
 import { TemplatePreview } from "@/components/templates/TemplatePreview";
 import { templates } from "@/lib/templates/registry";
 
-const featuredTemplates = ["modern-02", "creative-03", "classic-04", "minimal-01"]
-  .map((id) => templates.find((template) => template.id === id))
-  .filter((template) => template !== undefined);
+const showcaseTemplates = templates.slice(0, 8);
 
 const features: Array<[string, string, LucideIcon]> = [
-  ["Specialized Templates", "Engineering, executive, creative, graduate, legal, healthcare, finance, and ATS-first layouts.", Layers3],
-  ["AI Writing Assistant", "Generate stronger bullets, rewrite weak text, and align your story to the role.", Bot],
-  ["ATS Keyword Checker", "Compare your resume against a job description before you apply.", SearchCheck],
-  ["Live Preview", "Every edit updates the selected design instantly, including colors and spacing.", Zap],
-  ["Instant PDF Export", "Download a clean A4 PDF without upgrade prompts or locked templates.", Download],
-  ["Private by Design", "Supabase row-level security keeps each signed-in user’s resumes separated.", Lock],
+  ["20 Premium Free Templates", "A curated library of specialized layouts for tech, executive, legal, finance, academic, creative, and ATS-first resumes.", Layers3],
+  ["Live Template Preview", "Every template card renders a real resume preview, including header, contact details, experience, education, skills, and projects.", Zap],
+  ["AI Writing Assistant", "Generate bullet suggestions, rewrite weak text, and improve tone without leaving the builder.", Bot],
+  ["ATS Keyword Checker", "Compare your resume against a job description and see present keywords, missing keywords, and improvement tips.", SearchCheck],
+  ["Instant PDF Export", "Download an A4 resume PDF from the builder with one click.", Download],
+  ["Protected Accounts", "Google OAuth, email magic links, and Supabase row-level security keep user resumes separated.", Lock],
 ];
 
-const roles = ["Software Engineer", "Product Manager", "UX Designer", "Executive", "Nurse", "Teacher", "Lawyer", "Graduate", "Data Analyst", "Marketing Lead"];
+const steps = [
+  ["Choose a premium template", "Preview 20 complete designs by role, style, and specialty before opening the builder."],
+  ["Write with structure", "Fill guided sections for summary, work, education, skills, projects, certifications, languages, and custom content."],
+  ["Polish and export", "Use theme controls, AI suggestions, live preview, and PDF export to finish confidently."],
+];
 
 const faqs = [
-  ["Is it really free?", "Yes. The product is designed around permanently free templates, AI help, live preview, and PDF export."],
-  ["Can I preview templates first?", "Yes. The gallery shows live rendered previews and a larger preview before you use a template."],
-  ["Are templates specialized?", "Yes. Templates are tagged by role and use case, including modern tech resumes, creative portfolios, academic CVs, ATS layouts, and executive formats."],
-  ["Is my data safe?", "The Supabase schema uses row-level security so users can only access their own resumes and sections."],
-  ["What file formats are available?", "PDF export is included now through @react-pdf/renderer."],
-  ["Does it help with ATS?", "Yes. The AI keyword route scores a resume against a job description and returns matched and missing keywords."],
+  ["How many templates are included?", "ResumeForge now has 20 curated templates. Each one is named, specialized, previewable, and free."],
+  ["Are the previews real?", "Yes. Template cards render the actual template component using complete sample resume information."],
+  ["Is it free?", "Yes. Templates, AI routes, live preview, and PDF export are built as free features."],
+  ["Can I use it without a password?", "Yes. The auth flow supports Google OAuth and email magic links."],
+  ["Does it support ATS resumes?", "Yes. Several templates are ATS-focused, and the keyword endpoint analyzes a resume against a job description."],
+  ["What do I need to deploy it?", "Set the Supabase and OpenAI environment variables from .env.example, run the Supabase migration, and deploy the Next.js app."],
 ];
+
+function Header() {
+  return (
+    <header className="sticky top-0 z-40 border-b border-slate-200/80 bg-white/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-5">
+        <Link className="inline-flex items-center gap-3 text-lg font-black text-slate-950" href="/">
+          <span className="grid size-10 place-items-center rounded-md bg-slate-950 text-white">R</span>
+          ResumeForge
+        </Link>
+        <nav className="hidden items-center gap-6 text-sm font-bold text-slate-600 md:flex">
+          <a href="#templates">Templates</a>
+          <a href="#features">Features</a>
+          <a href="#workflow">How it works</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+        <div className="flex items-center gap-2">
+          <Link className="hidden h-10 items-center rounded-md px-4 text-sm font-black text-slate-700 hover:bg-slate-100 sm:inline-flex" href="/templates">
+            Preview
+          </Link>
+          <Link className="inline-flex h-10 items-center gap-2 rounded-md bg-slate-950 px-4 text-sm font-black text-white hover:bg-slate-800" href="/builder/new">
+            Start Free <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="border-t border-slate-200 bg-white">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]">
+        <div>
+          <Link className="inline-flex items-center gap-3 text-lg font-black text-slate-950" href="/">
+            <span className="grid size-10 place-items-center rounded-md bg-slate-950 text-white">R</span>
+            ResumeForge
+          </Link>
+          <p className="mt-4 max-w-sm text-sm leading-6 text-slate-600">
+            A free CV builder with premium templates, AI writing help, live preview, Supabase auth, and PDF export.
+          </p>
+        </div>
+        <div>
+          <h3 className="text-sm font-black text-slate-950">Product</h3>
+          <nav className="mt-3 grid gap-2 text-sm text-slate-600">
+            <Link href="/templates">Templates</Link>
+            <a href="#features">Features</a>
+            <a href="#workflow">How it works</a>
+          </nav>
+        </div>
+        <div>
+          <h3 className="text-sm font-black text-slate-950">Builder</h3>
+          <nav className="mt-3 grid gap-2 text-sm text-slate-600">
+            <Link href="/builder/new">Create CV</Link>
+            <Link href="/login">Login</Link>
+            <a href="#faq">FAQ</a>
+          </nav>
+        </div>
+        <div>
+          <h3 className="text-sm font-black text-slate-950">Trust</h3>
+          <div className="mt-3 grid gap-2 text-sm text-slate-600">
+            <span className="inline-flex items-center gap-2"><ShieldCheck className="size-4" /> Supabase RLS</span>
+            <span className="inline-flex items-center gap-2"><Mail className="size-4" /> Magic link auth</span>
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-slate-200 px-5 py-5 text-center text-xs font-semibold text-slate-500">
+        ResumeForge. Free templates, free preview, free PDF export.
+      </div>
+    </footer>
+  );
+}
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#07111f] text-white">
-      <section className="relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.055)_1px,transparent_1px)] bg-[size:44px_44px]" />
-        <div className="relative mx-auto grid min-h-[88vh] max-w-7xl gap-12 px-5 py-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+    <main className="min-h-screen bg-[#f6f7fb] text-slate-950">
+      <Header />
+
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(15,23,42,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,.06)_1px,transparent_1px)] bg-[size:44px_44px]" />
+        <div className="relative mx-auto grid max-w-7xl gap-12 px-5 py-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-24">
           <div>
-            <nav className="mb-14 flex items-center justify-between gap-4">
-              <Link className="inline-flex items-center gap-3 text-lg font-black" href="/">
-                <span className="grid size-10 place-items-center rounded-md bg-blue-500 text-white shadow-lg shadow-blue-950/40">R</span>
-                ResumeForge
-              </Link>
-              <Link className="hidden rounded-md border border-white/15 px-4 py-2 text-sm font-bold text-slate-200 hover:bg-white/10 sm:inline-flex" href="/templates">
-                Browse templates
-              </Link>
-            </nav>
-            <p className="mb-5 inline-flex rounded-md border border-cyan-300/20 bg-cyan-300/10 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-cyan-100">
-              Free resume builder for serious applications
+            <p className="inline-flex rounded-md border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-blue-700">
+              Premium CV builder, free forever
             </p>
-            <h1 className="max-w-4xl text-5xl font-black leading-[1.02] md:text-7xl">Build a resume that looks tailored, not templated.</h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-              Pick a specialized template, write with AI help, preview every change live, and export a polished PDF. No credit card. No template paywall.
+            <h1 className="mt-6 max-w-4xl text-5xl font-black leading-[1.02] tracking-tight text-slate-950 md:text-7xl">
+              Build a job-ready CV with templates that actually look professional.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-600">
+              ResumeForge gives you 20 curated premium templates, AI-powered writing help, live full-page previews, ATS keyword analysis, and instant PDF download.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link className="inline-flex h-12 items-center gap-2 rounded-md bg-blue-500 px-5 font-black text-white shadow-lg shadow-blue-950/40 hover:bg-blue-400" href="/builder/new">
+              <Link className="inline-flex h-12 items-center gap-2 rounded-md bg-slate-950 px-5 font-black text-white shadow-lg shadow-slate-300 hover:bg-slate-800" href="/builder/new">
                 Start Building Free <ArrowRight className="size-4" />
               </Link>
-              <Link className="inline-flex h-12 items-center rounded-md border border-white/20 px-5 font-black text-white hover:bg-white/10" href="/templates">Preview Templates</Link>
+              <Link className="inline-flex h-12 items-center gap-2 rounded-md border border-slate-300 bg-white px-5 font-black text-slate-950 hover:bg-slate-50" href="/templates">
+                Browse 20 Templates
+              </Link>
             </div>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {roles.slice(0, 6).map((role) => (
-                <span className="rounded-md bg-white/8 px-3 py-2 text-xs font-bold text-slate-200" key={role}>{role}</span>
+            <div className="mt-8 grid max-w-xl gap-3 sm:grid-cols-3">
+              {["20 premium templates", "Live preview", "PDF export"].map((item) => (
+                <div className="rounded-md border border-slate-200 bg-white px-3 py-3 text-sm font-black shadow-sm" key={item}>
+                  <CheckCircle2 className="mb-2 size-5 text-emerald-500" />
+                  {item}
+                </div>
               ))}
             </div>
           </div>
 
-          <div className="relative min-h-[620px]">
-            <div className="absolute left-0 top-8 hidden w-56 rounded-md border border-emerald-300/20 bg-emerald-300/10 p-4 text-sm text-emerald-50 shadow-2xl shadow-black/30 md:block">
-              <Target className="mb-3 size-5" />
-              <strong>ATS score: 86</strong>
-              <p className="mt-1 text-emerald-100/80">12 matched keywords · 4 missing</p>
+          <div className="relative">
+            <div className="absolute -left-4 top-12 z-10 hidden rounded-md border border-emerald-200 bg-white p-4 shadow-xl md:block">
+              <div className="flex items-center gap-2 text-sm font-black text-emerald-700">
+                <Sparkles className="size-4" /> ATS score 86
+              </div>
+              <p className="mt-1 text-xs text-slate-500">12 matched keywords · 4 missing</p>
             </div>
-            <div className="grid grid-cols-2 gap-4 pt-10 sm:gap-5">
-              {featuredTemplates.map((template, index) => (
+            <div className="grid grid-cols-2 gap-4">
+              {showcaseTemplates.slice(0, 4).map((template, index) => (
                 <Link
-                  className="group rounded-md border border-white/10 bg-white/[0.06] p-3 shadow-2xl shadow-black/30 transition-transform hover:-translate-y-1"
+                  className="group rounded-md border border-slate-200 bg-white p-3 shadow-xl shadow-slate-200/70 transition-transform hover:-translate-y-1"
                   href={`/builder/new?template=${template.id}`}
                   key={template.id}
-                  style={{ marginTop: index % 2 ? 46 : 0 }}
+                  style={{ marginTop: index % 2 ? 42 : 0 }}
                 >
-                  <TemplatePreview template={template} className="shadow-xl shadow-black/30" />
-                  <div className="mt-3 flex items-center justify-between gap-2">
-                    <div>
-                      <p className="text-sm font-black">{template.name}</p>
-                      <p className="text-xs text-slate-300">{template.specialty}</p>
-                    </div>
-                    <ArrowRight className="size-4 text-cyan-200 opacity-0 transition group-hover:opacity-100" />
+                  <TemplatePreview template={template} className="shadow-sm" />
+                  <div className="mt-3">
+                    <p className="text-sm font-black text-slate-950">{template.name}</p>
+                    <p className="text-xs font-semibold text-slate-500">{template.specialty}</p>
                   </div>
                 </Link>
               ))}
@@ -106,105 +179,132 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-b border-white/10 bg-white/[0.025]">
-        <div className="mx-auto grid max-w-7xl gap-4 px-5 py-8 md:grid-cols-4">
-          {["100 free templates", "Live full-page preview", "AI resume writing", "One-click PDF"].map((stat) => (
-            <div className="flex items-center gap-3" key={stat}>
-              <CheckCircle2 className="size-5 text-emerald-300" />
-              <span className="text-sm font-black text-slate-100">{stat}</span>
+      <section className="border-y border-slate-200 bg-white">
+        <div className="mx-auto grid max-w-7xl gap-4 px-5 py-7 md:grid-cols-4">
+          {["No credit card", "All templates free", "AI writing routes", "Supabase ready"].map((item) => (
+            <div className="flex items-center gap-3 text-sm font-black text-slate-700" key={item}>
+              <Star className="size-4 fill-amber-400 text-amber-400" />
+              {item}
             </div>
           ))}
         </div>
       </section>
 
       <section id="templates" className="mx-auto max-w-7xl px-5 py-20">
-        <div className="mb-8 grid gap-4 md:grid-cols-[0.85fr_1fr] md:items-end">
+        <div className="mb-10 grid gap-5 md:grid-cols-[0.9fr_1fr] md:items-end">
           <div>
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.22em] text-cyan-200">Pick by role</p>
-            <h2 className="text-4xl font-black md:text-5xl">Modern, specialized templates with real previews.</h2>
+            <p className="mb-3 text-sm font-black uppercase tracking-[0.22em] text-blue-700">20 curated templates</p>
+            <h2 className="text-4xl font-black tracking-tight md:text-5xl">Premium designs for real career paths.</h2>
           </div>
-          <p className="text-slate-300 md:text-right">The gallery now renders the actual resume component in each thumbnail, so what you preview is what opens in the builder.</p>
+          <p className="text-slate-600 md:text-right">
+            Every preview below uses complete sample resume information: summary, contact details, experience, education, skills, projects, certifications, and languages.
+          </p>
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {featuredTemplates.map((template) => (
-            <article className="rounded-md border border-white/10 bg-white/[0.045] p-4" key={template.id}>
-              <TemplatePreview template={template} className="shadow-xl shadow-black/25" />
-              <h3 className="mt-4 text-lg font-black">{template.name}</h3>
-              <p className="mt-1 text-sm text-cyan-100">{template.specialty}</p>
-              <p className="mt-3 text-sm leading-6 text-slate-300">{template.description}</p>
+          {showcaseTemplates.map((template) => (
+            <article className="rounded-md border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-xl" key={template.id}>
+              <TemplatePreview template={template} className="shadow-sm" />
+              <div className="mt-4 flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-lg font-black">{template.name}</h3>
+                  <p className="mt-1 text-sm font-bold text-blue-700">{template.specialty}</p>
+                </div>
+                <span className="rounded-md bg-slate-100 px-2 py-1 text-[10px] font-black uppercase text-slate-600">{template.category}</span>
+              </div>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{template.description}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {template.tags.slice(0, 3).map((tag) => (
+                  <span className="rounded-md bg-blue-50 px-2 py-1 text-[10px] font-black uppercase text-blue-700" key={tag}>{tag}</span>
+                ))}
+              </div>
             </article>
           ))}
         </div>
-        <Link className="mt-8 inline-flex h-11 items-center gap-2 rounded-md border border-white/15 px-4 font-black hover:bg-white/10" href="/templates">
-          View all specialized templates <ArrowRight className="size-4" />
-        </Link>
-      </section>
-
-      <section id="features" className="mx-auto max-w-7xl px-5 py-20">
-        <div className="mb-8 flex items-end justify-between gap-4">
-          <h2 className="text-4xl font-black md:text-5xl">Everything needed to ship the resume.</h2>
-          <BriefcaseBusiness className="hidden size-10 text-cyan-200 md:block" />
-        </div>
-        <div className="grid gap-4 md:grid-cols-3">
-          {features.map(([title, text, Icon]) => (
-            <div className="rounded-md border border-white/10 bg-[#0d1b2f] p-6 shadow-[inset_0_1px_0_rgba(255,255,255,.08)]" key={title}>
-              <Icon className="mb-5 size-8 text-cyan-200" />
-              <h3 className="text-xl font-black">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-300">{text}</p>
-            </div>
-          ))}
+        <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-md border border-slate-200 bg-white p-5">
+          <p className="font-bold text-slate-700">Need the full library? View all 20 templates with large previews and specialty filters.</p>
+          <Link className="inline-flex h-11 items-center gap-2 rounded-md bg-slate-950 px-4 font-black text-white" href="/templates">
+            Open Template Gallery <ArrowRight className="size-4" />
+          </Link>
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-8 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
+      <section id="features" className="bg-white py-20">
+        <div className="mx-auto max-w-7xl px-5">
+          <div className="mb-10 max-w-3xl">
+            <p className="mb-3 text-sm font-black uppercase tracking-[0.22em] text-emerald-700">Complete product</p>
+            <h2 className="text-4xl font-black tracking-tight md:text-5xl">Everything a serious CV builder needs.</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {features.map(([title, text, Icon]) => (
+              <div className="rounded-md border border-slate-200 bg-[#fbfcff] p-6" key={title}>
+                <Icon className="mb-5 size-8 text-blue-600" />
+                <h3 className="text-xl font-black">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" className="mx-auto grid max-w-7xl gap-8 px-5 py-20 lg:grid-cols-[0.8fr_1.2fr]">
         <div>
-          <p className="mb-3 text-sm font-black uppercase tracking-[0.22em] text-emerald-200">Simple workflow</p>
-          <h2 className="text-4xl font-black md:text-5xl">From blank page to polished PDF in three moves.</h2>
+          <p className="mb-3 text-sm font-black uppercase tracking-[0.22em] text-blue-700">Workflow</p>
+          <h2 className="text-4xl font-black tracking-tight md:text-5xl">A simple path from draft to finished PDF.</h2>
         </div>
         <div className="grid gap-4 md:grid-cols-3">
-          {["Choose a role-ready design", "Fill sections with AI help", "Preview and download PDF"].map((step, index) => (
-            <div className="rounded-md border border-white/10 bg-white/[0.04] p-5" key={step}>
-              <p className="text-sm font-black text-cyan-200">0{index + 1}</p>
-              <h3 className="mt-4 text-xl font-black">{step}</h3>
+          {steps.map(([title, text], index) => (
+            <div className="rounded-md border border-slate-200 bg-white p-5 shadow-sm" key={title}>
+              <p className="text-sm font-black text-blue-700">0{index + 1}</p>
+              <h3 className="mt-4 text-xl font-black">{title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{text}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-7xl gap-4 px-5 py-20 md:grid-cols-4">
-        {["Maya Chen", "Jordan Ellis", "Priya Raman", "Noah Brooks"].map((name, index) => (
-          <blockquote className="rounded-md border border-white/10 bg-white/[0.035] p-5" key={name}>
-            <div className="mb-4 grid size-10 place-items-center rounded-md bg-blue-500/20 text-sm font-black text-blue-100">{name.split(" ").map((part) => part[0]).join("")}</div>
-            <p className="text-sm leading-6 text-slate-300">“The live previews made template choice obvious. I could pick a design for my role and export a polished resume fast.”</p>
-            <footer className="mt-4 text-sm font-black">{name}<br /><span className="font-medium text-slate-400">{["Product Manager", "Frontend Engineer", "Data Analyst", "Designer"][index]}</span></footer>
-          </blockquote>
-        ))}
+      <section className="bg-slate-950 px-5 py-20 text-white">
+        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+          <div>
+            <Sparkles className="mb-5 size-10 text-cyan-200" />
+            <h2 className="text-4xl font-black tracking-tight md:text-5xl">AI help built into the resume workflow.</h2>
+            <p className="mt-4 text-slate-300">Generate resume bullets, rewrite summary text, and compare your resume against a job description for ATS keyword coverage.</p>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {["5 bullet suggestions", "Professional rewrite", "Keyword score"].map((item) => (
+              <div className="rounded-md border border-white/10 bg-white/[0.06] p-5" key={item}>
+                <Bot className="mb-4 size-7 text-cyan-200" />
+                <h3 className="font-black">{item}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-300">Powered by GPT-4o through Vercel AI SDK routes.</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section id="faq" className="mx-auto max-w-3xl px-5 py-20">
-        <h2 className="mb-8 text-4xl font-black">FAQ</h2>
+        <h2 className="mb-8 text-4xl font-black">Frequently asked questions</h2>
         <Accordion type="single" collapsible className="space-y-3">
           {faqs.map(([question, answer]) => (
-            <AccordionItem className="rounded-md border border-white/10 bg-white/[0.025] px-4" value={question} key={question}>
+            <AccordionItem className="rounded-md border border-slate-200 bg-white px-4" value={question} key={question}>
               <AccordionTrigger className="flex w-full items-center justify-between py-4 text-left font-bold">{question}</AccordionTrigger>
-              <AccordionContent className="pb-4 text-sm leading-6 text-slate-300">{answer}</AccordionContent>
+              <AccordionContent className="pb-4 text-sm leading-6 text-slate-600">{answer}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>
       </section>
 
-      <section className="bg-[#050a13] px-5 py-20 text-center">
-        <Sparkles className="mx-auto mb-5 size-10 text-cyan-200" />
-        <h2 className="text-4xl font-black">Ready to build a resume that fits the role?</h2>
-        <Link className="mt-8 inline-flex h-12 items-center gap-2 rounded-md bg-blue-500 px-5 font-black" href="/builder/new">Create My CV Now <ArrowRight className="size-4" /></Link>
+      <section className="mx-auto max-w-7xl px-5 pb-20">
+        <div className="rounded-md bg-slate-950 px-6 py-12 text-center text-white">
+          <FileText className="mx-auto mb-5 size-10 text-cyan-200" />
+          <h2 className="text-4xl font-black tracking-tight">Ready to create your CV?</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-slate-300">Start with a premium template, write faster with AI, preview every change, and download your PDF.</p>
+          <Link className="mt-8 inline-flex h-12 items-center gap-2 rounded-md bg-white px-5 font-black text-slate-950" href="/builder/new">
+            Create My CV Now <ArrowRight className="size-4" />
+          </Link>
+        </div>
       </section>
 
-      <footer className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-8 text-sm text-slate-400">
-        <p><strong className="text-white">ResumeForge</strong> · Specialized resumes, free forever.</p>
-        <nav className="flex flex-wrap gap-4">
-          <Link href="/templates">Templates</Link><a href="#features">Features</a><a href="#faq">FAQ</a><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link>
-        </nav>
-      </footer>
+      <Footer />
     </main>
   );
 }

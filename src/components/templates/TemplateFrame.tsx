@@ -181,10 +181,11 @@ function CompactLists({ data, theme, variant }: TemplateProps & { variant: Templ
 
 function Header({ data, theme, variant }: TemplateProps & { variant: TemplateVariant }) {
   const base = "relative overflow-hidden";
+  const contactLine = [data.personal.email, data.personal.phone, data.personal.location].filter(Boolean).join("  ·  ");
   if (variant.header === "band" || variant.header === "gradient" || variant.header === "dark" || variant.header === "diagonal") {
     return (
       <header
-        className={`${base} p-7 text-white`}
+        className={`${base} p-8 text-white`}
         style={{
           background:
             variant.header === "gradient"
@@ -197,12 +198,13 @@ function Header({ data, theme, variant }: TemplateProps & { variant: TemplateVar
         {variant.header === "diagonal" ? <div className="absolute -right-16 -top-16 size-44 rotate-45 bg-white/15" /> : null}
         <h1 className="text-4xl font-black leading-none">{data.personal.fullName}</h1>
         <p className="mt-2 text-sm font-semibold uppercase tracking-[0.2em] text-white/80">{data.personal.jobTitle}</p>
+        <p className="mt-4 max-w-xl text-[11px] font-medium leading-5 text-white/75">{contactLine}</p>
       </header>
     );
   }
 
   return (
-    <header className={variant.header === "centered" ? "p-7 text-center" : "p-7"}>
+    <header className={variant.header === "centered" ? "p-8 text-center" : "p-8"}>
       <h1
         className={variant.header === "display" ? "text-5xl font-black leading-none" : "text-4xl font-black leading-tight"}
         style={{ fontFamily: variant.header === "serif" || variant.header === "academic" ? "Georgia, serif" : undefined }}
@@ -212,6 +214,7 @@ function Header({ data, theme, variant }: TemplateProps & { variant: TemplateVar
       <p className="mt-1 text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: theme.primary }}>
         {data.personal.jobTitle}
       </p>
+      <p className={`mt-3 text-[11px] leading-5 text-gray-500 ${variant.header === "centered" ? "mx-auto max-w-2xl" : ""}`}>{contactLine}</p>
       {variant.header === "minimal" ? <div className="mt-5 h-px" style={{ backgroundColor: theme.primary }} /> : null}
     </header>
   );
@@ -254,8 +257,10 @@ export function TemplateFrame({ data, theme, variant }: TemplateProps & { varian
 
   if (variant.layout === "sidebar-left" || variant.layout === "sidebar-right") {
     const sidebar = (
-      <aside className={`${padding} text-white`} style={{ backgroundColor: theme.primary }}>
-        <div className="mb-5 size-20 rounded-full bg-white/25" />
+      <aside className={`${padding} text-white`} style={{ background: `linear-gradient(160deg, ${theme.primary}, ${theme.secondary})` }}>
+        <div className="mb-5 grid size-20 place-items-center rounded-full bg-white/20 text-2xl font-black">
+          {data.personal.fullName.split(" ").map((part) => part[0]).join("").slice(0, 2)}
+        </div>
         <Contact data={data} />
         <div className="mt-6">
           <Skills data={data} theme={{ ...theme, primary: "#ffffff" }} variant={{ ...variant, accent: "progress" }} />

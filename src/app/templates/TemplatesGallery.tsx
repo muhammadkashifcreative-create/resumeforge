@@ -35,9 +35,9 @@ export function TemplatesGallery() {
         </Link>
         <div className="mt-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-200">Live resume previews</p>
-            <h1 className="text-4xl font-black md:text-6xl">Specialized Templates</h1>
-            <p className="mt-3 max-w-2xl text-slate-300">Choose from free templates tuned for engineering, executive, creative, graduate, healthcare, legal, finance, and ATS-first roles.</p>
+            <p className="mb-3 text-sm font-black uppercase tracking-[0.28em] text-cyan-200">20 live resume previews</p>
+            <h1 className="text-4xl font-black md:text-6xl">Premium Template Gallery</h1>
+            <p className="mt-3 max-w-2xl text-slate-300">Choose from 20 curated free templates tuned for engineering, executive, creative, graduate, healthcare, legal, finance, and ATS-first roles.</p>
           </div>
           <label className="relative block md:w-80">
             <Search className="absolute left-3 top-3 size-4 text-slate-400" />
@@ -74,6 +74,11 @@ export function TemplatesGallery() {
                   <span className="rounded bg-cyan-400/15 px-2 py-1 text-[10px] font-bold uppercase text-cyan-200">{template.category}</span>
                 </div>
                 <p className="mt-3 text-xs leading-5 text-slate-400">{template.description}</p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {template.tags.slice(0, 4).map((tag) => (
+                    <span className="rounded bg-white/10 px-2 py-1 text-[9px] font-black uppercase text-slate-300" key={tag}>{tag}</span>
+                  ))}
+                </div>
               </div>
             </article>
           ))}

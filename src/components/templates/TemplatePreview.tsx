@@ -17,8 +17,8 @@ export function TemplatePreview({ template, className = "" }: { template: Templa
   const colors = palette[template.id.charCodeAt(template.id.length - 1) % palette.length];
 
   return (
-    <div className={`relative aspect-[210/297] overflow-hidden rounded-md bg-slate-200 ${className}`}>
-      <div className="absolute left-0 top-0 origin-top-left scale-[0.235]">
+    <div className={`relative mx-auto aspect-[210/297] w-full max-w-[230px] overflow-hidden rounded-md bg-slate-200 ${className}`}>
+      <div className="absolute left-1/2 top-0 origin-top-left -translate-x-1/2 scale-[0.282]">
         <div className="w-[816px] [&_article]:min-h-[1056px] [&_article]:shadow-none">
           <TemplateComponent
             data={sampleResume}

@@ -1,142 +1,220 @@
+import type { TemplateVariant } from "@/components/templates/TemplateFrame";
 import { createTemplateComponent } from "@/components/templates/factory";
 import type { Template } from "@/types/resume";
-import type { TemplateVariant } from "@/components/templates/TemplateFrame";
 
-const fullVariants: Record<string, TemplateVariant> = {
-  "classic-01": { layout: "sidebar-left", header: "serif", font: "Georgia, serif", accent: "left-bar" },
-  "classic-02": { layout: "single", header: "centered", font: "Inter, sans-serif", accent: "top-line" },
-  "classic-03": { layout: "single", header: "bordered", font: "Times New Roman, serif", accent: "none", density: "compact" },
-  "classic-04": { layout: "single", header: "band", font: "Inter, sans-serif", accent: "top-line" },
-  "classic-05": {
-    layout: "single",
-    header: "academic",
-    font: "Georgia, serif",
-    accent: "none",
-    sectionOrder: ["education", "experience", "projects", "skills", "certifications", "languages", "custom"],
+interface TemplateDefinition {
+  id: string;
+  name: string;
+  category: Template["category"];
+  specialty: string;
+  description: string;
+  tags: string[];
+  variant: TemplateVariant;
+}
+
+const definitions: TemplateDefinition[] = [
+  {
+    id: "classic-01",
+    name: "Executive Ivory",
+    category: "Classic",
+    specialty: "Executive Leadership",
+    description: "A premium two-column executive resume with a refined serif nameplate, focused sidebar, and boardroom-ready hierarchy.",
+    tags: ["executive", "leadership", "corporate", "serif", "two column"],
+    variant: { layout: "sidebar-left", header: "serif", font: "Georgia, serif", accent: "left-bar", density: "normal" },
   },
-  "modern-01": { layout: "sidebar-left", header: "minimal", font: "Inter, sans-serif", accent: "progress" },
-  "modern-02": { layout: "cards", header: "gradient", font: "Inter, sans-serif", accent: "chips" },
-  "modern-03": { layout: "single", header: "display", font: "Arial, sans-serif", accent: "top-line" },
-  "modern-04": { layout: "timeline", header: "minimal", font: "Inter, sans-serif", accent: "dots" },
-  "modern-05": { layout: "split", header: "band", font: "Inter, sans-serif", accent: "chips" },
-  "creative-01": { layout: "single", header: "dark", font: "Inter, sans-serif", accent: "progress" },
-  "creative-02": { layout: "magazine", header: "diagonal", font: "Arial, sans-serif", accent: "dots" },
-  "creative-03": { layout: "magazine", header: "display", font: "Georgia, serif", accent: "chips", density: "spacious" },
-  "minimal-01": { layout: "single", header: "minimal", font: "Inter, sans-serif", accent: "none", density: "spacious" },
-  "minimal-02": { layout: "single", header: "minimal", font: "Georgia, serif", accent: "dots", density: "compact" },
-};
-
-const layouts: TemplateVariant["layout"][] = ["single", "split", "timeline", "cards", "sidebar-left", "sidebar-right", "magazine"];
-const headers: TemplateVariant["header"][] = ["serif", "centered", "bordered", "band", "gradient", "display", "dark", "diagonal", "minimal"];
-const accents: TemplateVariant["accent"][] = ["left-bar", "top-line", "chips", "progress", "dots", "none"];
-const fonts = ["Inter, sans-serif", "Georgia, serif", "Arial, sans-serif", "Times New Roman, serif", "Trebuchet MS, sans-serif"];
-
-const specialties = {
-  Classic: [
-    "Executive Leadership",
-    "Corporate Finance",
-    "Legal Counsel",
-    "Academic CV",
-    "Government Roles",
-    "Healthcare Administration",
-    "Consulting",
-    "Operations",
-  ],
-  Modern: [
-    "Software Engineering",
-    "Product Management",
-    "UX/UI Design",
-    "Data Science",
-    "Marketing Strategy",
-    "Sales Leadership",
-    "Cybersecurity",
-    "Startup Founder",
-    "Customer Success",
-    "Cloud Architecture",
-  ],
-  Creative: [
-    "Brand Designer",
-    "Art Director",
-    "Content Creator",
-    "Motion Designer",
-    "Creative Producer",
-    "Photographer",
-    "Fashion Portfolio",
-    "Social Media",
-  ],
-  Minimal: [
-    "ATS Specialist",
-    "Graduate Resume",
-    "Technical Writer",
-    "Research Assistant",
-    "Nonprofit",
-    "Remote Work",
-    "Clean One-Page",
-    "International CV",
-  ],
-} satisfies Record<Template["category"], string[]>;
-
-const styleNames = [
-  "Signal",
-  "Atlas",
-  "Meridian",
-  "Northstar",
-  "Aperture",
-  "Vector",
-  "Keystone",
-  "Summit",
-  "Studio",
-  "Ledger",
-  "Pulse",
-  "Linear",
+  {
+    id: "classic-02",
+    name: "Corporate Ledger",
+    category: "Classic",
+    specialty: "Finance and Consulting",
+    description: "A precise single-column format for finance, consulting, and operations roles where clarity and credibility matter.",
+    tags: ["finance", "consulting", "operations", "corporate", "ats"],
+    variant: { layout: "single", header: "centered", font: "Inter, sans-serif", accent: "top-line", density: "compact" },
+  },
+  {
+    id: "classic-03",
+    name: "Legal Counsel",
+    category: "Classic",
+    specialty: "Legal and Policy",
+    description: "Traditional chronological styling with strong section rules, conservative spacing, and polished legal-document typography.",
+    tags: ["legal", "policy", "traditional", "chronological", "professional"],
+    variant: { layout: "single", header: "bordered", font: "Times New Roman, serif", accent: "none", density: "compact" },
+  },
+  {
+    id: "classic-04",
+    name: "Boardroom Blue",
+    category: "Classic",
+    specialty: "Senior Management",
+    description: "A confident color-band header and restrained body layout built for directors, managers, and senior operators.",
+    tags: ["management", "director", "executive", "blue", "single column"],
+    variant: { layout: "single", header: "band", font: "Inter, sans-serif", accent: "top-line", density: "normal" },
+  },
+  {
+    id: "classic-05",
+    name: "Academic Dossier",
+    category: "Classic",
+    specialty: "Academic CV",
+    description: "Education-first structure with publication-style typography for research, teaching, fellowship, and academic applications.",
+    tags: ["academic", "research", "education", "cv", "fellowship"],
+    variant: {
+      layout: "single",
+      header: "academic",
+      font: "Georgia, serif",
+      accent: "none",
+      density: "spacious",
+      sectionOrder: ["education", "experience", "projects", "skills", "certifications", "languages", "custom"],
+    },
+  },
+  {
+    id: "modern-01",
+    name: "Tech Sidebar",
+    category: "Modern",
+    specialty: "Software Engineering",
+    description: "A crisp left-sidebar engineering resume with visible skills, strong project emphasis, and recruiter-friendly scanning.",
+    tags: ["software", "engineering", "developer", "technical", "sidebar"],
+    variant: { layout: "sidebar-left", header: "minimal", font: "Inter, sans-serif", accent: "progress", density: "normal" },
+  },
+  {
+    id: "modern-02",
+    name: "Product Gradient",
+    category: "Modern",
+    specialty: "Product Management",
+    description: "Modern gradient header, carded experience blocks, and product-ready storytelling for PM and strategy roles.",
+    tags: ["product", "strategy", "manager", "gradient", "cards"],
+    variant: { layout: "cards", header: "gradient", font: "Inter, sans-serif", accent: "chips", density: "normal" },
+  },
+  {
+    id: "modern-03",
+    name: "Design Signal",
+    category: "Modern",
+    specialty: "UX/UI Design",
+    description: "Bold display typography and clean accent lines for designers who need a contemporary but still professional resume.",
+    tags: ["ux", "ui", "design", "portfolio", "bold"],
+    variant: { layout: "split", header: "display", font: "Arial, sans-serif", accent: "chips", density: "spacious" },
+  },
+  {
+    id: "modern-04",
+    name: "Data Timeline",
+    category: "Modern",
+    specialty: "Data Science",
+    description: "Timeline-based career progression with clear metrics, compact education, and room for technical project signals.",
+    tags: ["data", "analytics", "science", "timeline", "metrics"],
+    variant: { layout: "timeline", header: "minimal", font: "Inter, sans-serif", accent: "dots", density: "compact" },
+  },
+  {
+    id: "modern-05",
+    name: "Revenue Banner",
+    category: "Modern",
+    specialty: "Sales Leadership",
+    description: "A strong banner header with skill badges and outcome-led sections for sales, growth, and customer-facing leaders.",
+    tags: ["sales", "growth", "revenue", "leadership", "banner"],
+    variant: { layout: "split", header: "band", font: "Inter, sans-serif", accent: "chips", density: "normal" },
+  },
+  {
+    id: "modern-06",
+    name: "Security Matrix",
+    category: "Modern",
+    specialty: "Cybersecurity",
+    description: "High-contrast technical layout for cybersecurity, cloud, and infrastructure professionals who need authority fast.",
+    tags: ["cybersecurity", "cloud", "infrastructure", "technical", "dark"],
+    variant: { layout: "sidebar-right", header: "dark", font: "Inter, sans-serif", accent: "progress", density: "compact" },
+  },
+  {
+    id: "modern-07",
+    name: "Founder Pitch",
+    category: "Modern",
+    specialty: "Startup Founder",
+    description: "Magazine-inspired layout for founders and operators, balancing narrative, traction, projects, and leadership credibility.",
+    tags: ["founder", "startup", "operator", "magazine", "leadership"],
+    variant: { layout: "magazine", header: "diagonal", font: "Inter, sans-serif", accent: "chips", density: "spacious" },
+  },
+  {
+    id: "modern-08",
+    name: "Support Pulse",
+    category: "Modern",
+    specialty: "Customer Success",
+    description: "A service-focused resume with clean contact placement, badge skills, and readable impact bullets for CS teams.",
+    tags: ["customer success", "support", "saas", "service", "modern"],
+    variant: { layout: "cards", header: "centered", font: "Inter, sans-serif", accent: "chips", density: "normal" },
+  },
+  {
+    id: "creative-01",
+    name: "Studio Noir",
+    category: "Creative",
+    specialty: "Brand Designer",
+    description: "A dark editorial header, accent rules, and visual skill bars for brand, art direction, and studio portfolios.",
+    tags: ["brand", "designer", "creative", "dark", "portfolio"],
+    variant: { layout: "single", header: "dark", font: "Inter, sans-serif", accent: "progress", density: "normal" },
+  },
+  {
+    id: "creative-02",
+    name: "Editorial Angle",
+    category: "Creative",
+    specialty: "Art Director",
+    description: "Diagonal composition and magazine pacing for creative leaders who want personality without losing professionalism.",
+    tags: ["art director", "editorial", "creative", "diagonal", "magazine"],
+    variant: { layout: "magazine", header: "diagonal", font: "Arial, sans-serif", accent: "dots", density: "spacious" },
+  },
+  {
+    id: "creative-03",
+    name: "Creator Folio",
+    category: "Creative",
+    specialty: "Content Creator",
+    description: "Portfolio-style structure with generous typography and project-forward sections for content and media professionals.",
+    tags: ["content", "creator", "media", "portfolio", "projects"],
+    variant: { layout: "magazine", header: "display", font: "Georgia, serif", accent: "chips", density: "spacious" },
+  },
+  {
+    id: "creative-04",
+    name: "Motion Frame",
+    category: "Creative",
+    specialty: "Motion Designer",
+    description: "A vivid but controlled creative resume with split content, strong visual rhythm, and technical tool highlights.",
+    tags: ["motion", "video", "animation", "creative", "split"],
+    variant: { layout: "split", header: "gradient", font: "Inter, sans-serif", accent: "progress", density: "normal" },
+  },
+  {
+    id: "minimal-01",
+    name: "ATS Pure",
+    category: "Minimal",
+    specialty: "ATS Specialist",
+    description: "Ultra-clean, whitespace-led design that keeps parsing simple while still looking premium and deliberate.",
+    tags: ["ats", "minimal", "clean", "one page", "simple"],
+    variant: { layout: "single", header: "minimal", font: "Inter, sans-serif", accent: "none", density: "spacious" },
+  },
+  {
+    id: "minimal-02",
+    name: "Graduate Line",
+    category: "Minimal",
+    specialty: "Graduate Resume",
+    description: "Elegant small-caps styling, thin accent line, and balanced sections for internships and early-career applications.",
+    tags: ["graduate", "student", "internship", "minimal", "early career"],
+    variant: { layout: "single", header: "minimal", font: "Georgia, serif", accent: "dots", density: "normal" },
+  },
+  {
+    id: "minimal-03",
+    name: "Research Note",
+    category: "Minimal",
+    specialty: "Research Assistant",
+    description: "Quiet academic-minimal layout for research, nonprofit, policy, and writing roles that need calm authority.",
+    tags: ["research", "nonprofit", "policy", "writer", "minimal"],
+    variant: {
+      layout: "split",
+      header: "bordered",
+      font: "Georgia, serif",
+      accent: "top-line",
+      density: "spacious",
+      sectionOrder: ["education", "projects", "experience", "skills", "certifications", "languages", "custom"],
+    },
+  },
 ];
 
-function variantFor(category: Template["category"], index: number): TemplateVariant {
-  const id = `${category.toLowerCase()}-${String(index).padStart(2, "0")}`;
-  if (fullVariants[id]) {
-    return fullVariants[id];
-  }
-
-  const seed = index + category.length;
-  return {
-    layout: layouts[seed % layouts.length],
-    header: headers[(seed * 2) % headers.length],
-    font: fonts[(seed * 3) % fonts.length],
-    accent: accents[(seed * 5) % accents.length],
-    density: seed % 3 === 0 ? "compact" : seed % 3 === 1 ? "normal" : "spacious",
-    sectionOrder:
-      seed % 4 === 0
-        ? ["skills", "experience", "projects", "education", "certifications", "languages", "custom"]
-        : seed % 4 === 1
-          ? ["experience", "projects", "skills", "education", "certifications", "languages", "custom"]
-          : undefined,
-  };
-}
-
-function makeTemplate(category: Template["category"], index: number): Template {
-  const slug = category.toLowerCase();
-  const id = `${slug}-${String(index).padStart(2, "0")}`;
-  const variant = variantFor(category, index);
-
-  return {
-    id,
-    name: `${styleNames[(index + category.length) % styleNames.length]} ${String(index).padStart(2, "0")}`,
-    category,
-    specialty: specialties[category][(index - 1) % specialties[category].length],
-    description: `${category.toLowerCase()} resume template tuned for ${specialties[category][(index - 1) % specialties[category].length].toLowerCase()} applications.`,
-    thumbnail: `/templates/${id}.png`,
-    tags: [slug, variant.layout, variant.header, variant.accent, variant.font.split(",")[0].toLowerCase(), specialties[category][(index - 1) % specialties[category].length].toLowerCase()],
-    isPremium: false,
-    component: createTemplateComponent(variant),
-  };
-}
-
-const classic = Array.from({ length: 25 }, (_, index) => makeTemplate("Classic", index + 1));
-const modern = Array.from({ length: 30 }, (_, index) => makeTemplate("Modern", index + 1));
-const creative = Array.from({ length: 25 }, (_, index) => makeTemplate("Creative", index + 1));
-const minimal = Array.from({ length: 20 }, (_, index) => makeTemplate("Minimal", index + 1));
-
-export const templates: Template[] = [...classic, ...modern, ...creative, ...minimal];
+export const templates: Template[] = definitions.map((template) => ({
+  ...template,
+  thumbnail: `/templates/${template.id}.png`,
+  isPremium: false,
+  component: createTemplateComponent(template.variant),
+}));
 
 export const templateMap = new Map(templates.map((template) => [template.id, template]));
 
